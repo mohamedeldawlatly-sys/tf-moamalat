@@ -1,0 +1,1724 @@
+{
+  "version": 4,
+  "terraform_version": "1.5.7",
+  "serial": 4,
+  "lineage": "247323c7-f03f-d883-e20c-0afc5b65c58b",
+  "outputs": {
+    "access_instructions": {
+      "value": "    \n🎉 IBM Terraform \u0026 Vault Workshop Deployment Complete!\n    \n📱 Web Application: http://ibm-workshop-alb-1641883201.eu-west-1.elb.amazonaws.com\n🔐 Vault UI: http://ibm-workshop-alb-1641883201.eu-west-1.elb.amazonaws.com:8200\n    \n🔑 To access Vault:\nexport VAULT_ADDR=http://ibm-workshop-alb-1641883201.eu-west-1.elb.amazonaws.com:8200\nexport VAULT_TOKEN=i!7bxWw2}gzq\u003cu8:v*7G\nvault status\n    \n📊 Database Credentials (stored in Vault):\nvault kv get secret/database\n    \n🏷️ All resources are tagged with:\n- Environment: workshop\n- Project: ibm-terraform-vault-demo\n- Owner: mohamed-ramadan-issa\n- Workshop: terraform-vault-demo\n    \n🧹 Cleanup: terraform destroy -auto-approve\n    \nPresenter: Mohamed Ramadan Issa\nTarget: IBM Champions Saudi Arabia\n",
+      "type": "string",
+      "sensitive": true
+    },
+    "autoscaling_group_name": {
+      "value": "ibm-workshop-asg",
+      "type": "string"
+    },
+    "database_endpoint": {
+      "value": "ibm-workshop-db.clogoeic03cw.eu-west-1.rds.amazonaws.com:3306",
+      "type": "string",
+      "sensitive": true
+    },
+    "database_password": {
+      "value": "i\u003c%LbjFh+SltCLaA",
+      "type": "string",
+      "sensitive": true
+    },
+    "database_username": {
+      "value": "admin",
+      "type": "string"
+    },
+    "demo_commands": {
+      "value": "    \n🎯 Demo Commands for IBM Champions Workshop:\n    \n1. Check Vault Status:\n   vault status\n    \n2. List Vault Secrets:\n   vault kv list secret/\n    \n3. Get Database Credentials:\n   vault kv get secret/database\n    \n4. Show AWS Resources:\n   aws ec2 describe-instances --region eu-west-1 --query 'Reservations[*].Instances[*].[InstanceId,State.Name,Tags[?Key==`Name`].Value|[0]]' --output table\n    \n5. Show RDS Instance:\n   aws rds describe-db-instances --region eu-west-1 --query 'DBInstances[*].[DBInstanceIdentifier,DBInstanceStatus,Engine]' --output table\n    \n6. Show Load Balancer:\n   aws elbv2 describe-load-balancers --region eu-west-1 --query 'LoadBalancers[*].[LoadBalancerName,State.Code,DNSName]' --output table\n",
+      "type": "string"
+    },
+    "load_balancer_dns": {
+      "value": "ibm-workshop-alb-1641883201.eu-west-1.elb.amazonaws.com",
+      "type": "string"
+    },
+    "private_subnet_ids": {
+      "value": [
+        "subnet-069664d53846f1035",
+        "subnet-0c954fdffbffc5798"
+      ],
+      "type": [
+        "tuple",
+        [
+          "string",
+          "string"
+        ]
+      ]
+    },
+    "public_subnet_ids": {
+      "value": [
+        "subnet-04b0781b0e10cc46f",
+        "subnet-04da1be96b6f3b559"
+      ],
+      "type": [
+        "tuple",
+        [
+          "string",
+          "string"
+        ]
+      ]
+    },
+    "security_group_db_id": {
+      "value": "sg-05edc3f5e945d35d2",
+      "type": "string"
+    },
+    "security_group_web_id": {
+      "value": "sg-05967404d6580eaa9",
+      "type": "string"
+    },
+    "target_group_arn": {
+      "value": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:targetgroup/ibm-workshop-tg/703befdd2264dcaa",
+      "type": "string"
+    },
+    "vault_root_token": {
+      "value": "i!7bxWw2}gzq\u003cu8:v*7G",
+      "type": "string",
+      "sensitive": true
+    },
+    "vault_url": {
+      "value": "http://ibm-workshop-alb-1641883201.eu-west-1.elb.amazonaws.com:8200",
+      "type": "string"
+    },
+    "vpc_id": {
+      "value": "vpc-041a871c097939356",
+      "type": "string"
+    },
+    "webapp_url": {
+      "value": "http://ibm-workshop-alb-1641883201.eu-west-1.elb.amazonaws.com",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "aws_ami",
+      "name": "amazon_linux",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "architecture": "x86_64",
+            "arn": "arn:aws:ec2:eu-west-1::image/ami-06ce611e9f0dba763",
+            "block_device_mappings": [
+              {
+                "device_name": "/dev/xvda",
+                "ebs": {
+                  "delete_on_termination": "true",
+                  "encrypted": "false",
+                  "iops": "0",
+                  "snapshot_id": "snap-06b6a2a59204924c0",
+                  "throughput": "0",
+                  "volume_initialization_rate": "0",
+                  "volume_size": "8",
+                  "volume_type": "gp2"
+                },
+                "no_device": "",
+                "virtual_name": ""
+              }
+            ],
+            "boot_mode": "",
+            "creation_date": "2025-08-16T04:54:05.000Z",
+            "deprecation_time": "2025-11-14T04:54:00.000Z",
+            "description": "Amazon Linux 2 AMI 2.0.20250818.2 x86_64 HVM gp2",
+            "ena_support": true,
+            "executable_users": null,
+            "filter": [
+              {
+                "name": "name",
+                "values": [
+                  "amzn2-ami-hvm-*-x86_64-gp2"
+                ]
+              }
+            ],
+            "hypervisor": "xen",
+            "id": "ami-06ce611e9f0dba763",
+            "image_id": "ami-06ce611e9f0dba763",
+            "image_location": "amazon/amzn2-ami-hvm-2.0.20250818.2-x86_64-gp2",
+            "image_owner_alias": "amazon",
+            "image_type": "machine",
+            "imds_support": "",
+            "include_deprecated": false,
+            "kernel_id": "",
+            "last_launched_time": "",
+            "most_recent": true,
+            "name": "amzn2-ami-hvm-2.0.20250818.2-x86_64-gp2",
+            "name_regex": null,
+            "owner_id": "137112412989",
+            "owners": [
+              "amazon"
+            ],
+            "platform": "",
+            "platform_details": "Linux/UNIX",
+            "product_codes": [],
+            "public": true,
+            "ramdisk_id": "",
+            "root_device_name": "/dev/xvda",
+            "root_device_type": "ebs",
+            "root_snapshot_id": "snap-06b6a2a59204924c0",
+            "sriov_net_support": "simple",
+            "state": "available",
+            "state_reason": {
+              "code": "UNSET",
+              "message": "UNSET"
+            },
+            "tags": {},
+            "timeouts": null,
+            "tpm_support": "",
+            "uefi_data": null,
+            "usage_operation": "RunInstances",
+            "virtualization_type": "hvm"
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "aws_availability_zones",
+      "name": "available",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "all_availability_zones": null,
+            "exclude_names": null,
+            "exclude_zone_ids": null,
+            "filter": null,
+            "group_names": [
+              "eu-west-1-zg-1"
+            ],
+            "id": "eu-west-1",
+            "names": [
+              "eu-west-1a",
+              "eu-west-1b",
+              "eu-west-1c"
+            ],
+            "state": "available",
+            "timeouts": null,
+            "zone_ids": [
+              "euw1-az1",
+              "euw1-az2",
+              "euw1-az3"
+            ]
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_autoscaling_group",
+      "name": "web",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:autoscaling:eu-west-1:339712855370:autoScalingGroup:5c2c8874-16ba-4da8-b0d7-b498124c6441:autoScalingGroupName/ibm-workshop-asg",
+            "availability_zone_distribution": [
+              {
+                "capacity_distribution_strategy": "balanced-best-effort"
+              }
+            ],
+            "availability_zones": [
+              "eu-west-1a",
+              "eu-west-1b"
+            ],
+            "capacity_rebalance": false,
+            "capacity_reservation_specification": [
+              {
+                "capacity_reservation_preference": "default",
+                "capacity_reservation_target": []
+              }
+            ],
+            "context": "",
+            "default_cooldown": 300,
+            "default_instance_warmup": 0,
+            "desired_capacity": 2,
+            "desired_capacity_type": "",
+            "enabled_metrics": null,
+            "force_delete": false,
+            "force_delete_warm_pool": false,
+            "health_check_grace_period": 300,
+            "health_check_type": "ELB",
+            "id": "ibm-workshop-asg",
+            "ignore_failed_scaling_activities": false,
+            "initial_lifecycle_hook": [],
+            "instance_maintenance_policy": [],
+            "instance_refresh": [],
+            "launch_configuration": "",
+            "launch_template": [
+              {
+                "id": "lt-029b8def5d7c8967d",
+                "name": "ibm-workshop-20250824184852580800000005",
+                "version": "$Latest"
+              }
+            ],
+            "load_balancers": [],
+            "max_instance_lifetime": 0,
+            "max_size": 3,
+            "metrics_granularity": "1Minute",
+            "min_elb_capacity": null,
+            "min_size": 1,
+            "mixed_instances_policy": [],
+            "name": "ibm-workshop-asg",
+            "name_prefix": "",
+            "placement_group": "",
+            "predicted_capacity": 0,
+            "protect_from_scale_in": false,
+            "service_linked_role_arn": "arn:aws:iam::339712855370:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+            "suspended_processes": null,
+            "tag": [
+              {
+                "key": "CostCenter",
+                "propagate_at_launch": true,
+                "value": "ibm-champions"
+              },
+              {
+                "key": "CreatedBy",
+                "propagate_at_launch": true,
+                "value": "terraform"
+              },
+              {
+                "key": "Environment",
+                "propagate_at_launch": true,
+                "value": "workshop"
+              },
+              {
+                "key": "Name",
+                "propagate_at_launch": true,
+                "value": "ibm-workshop-asg-instance"
+              },
+              {
+                "key": "Owner",
+                "propagate_at_launch": true,
+                "value": "mohamed-ramadan-issa"
+              },
+              {
+                "key": "Project",
+                "propagate_at_launch": true,
+                "value": "ibm-terraform-vault-demo"
+              },
+              {
+                "key": "Region",
+                "propagate_at_launch": true,
+                "value": "eu-west-1"
+              },
+              {
+                "key": "Workshop",
+                "propagate_at_launch": true,
+                "value": "terraform-vault-demo"
+              }
+            ],
+            "target_group_arns": [
+              "arn:aws:elasticloadbalancing:eu-west-1:339712855370:targetgroup/ibm-workshop-tg/703befdd2264dcaa"
+            ],
+            "termination_policies": null,
+            "timeouts": null,
+            "traffic_source": [
+              {
+                "identifier": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:targetgroup/ibm-workshop-tg/703befdd2264dcaa",
+                "type": "elbv2"
+              }
+            ],
+            "vpc_zone_identifier": [
+              "subnet-04b0781b0e10cc46f",
+              "subnet-04da1be96b6f3b559"
+            ],
+            "wait_for_capacity_timeout": "10m",
+            "wait_for_elb_capacity": null,
+            "warm_pool": [],
+            "warm_pool_size": 0
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjo2MDAwMDAwMDAwMDAsInVwZGF0ZSI6NjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_db_instance.main",
+            "aws_db_subnet_group.main",
+            "aws_launch_template.web",
+            "aws_lb_target_group.web",
+            "aws_security_group.alb",
+            "aws_security_group.db",
+            "aws_security_group.web",
+            "aws_subnet.private",
+            "aws_subnet.public",
+            "aws_vpc.main",
+            "data.aws_ami.amazon_linux",
+            "data.aws_availability_zones.available",
+            "random_password.db_password",
+            "random_password.vault_password"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "address": "ibm-workshop-db.clogoeic03cw.eu-west-1.rds.amazonaws.com",
+            "allocated_storage": 20,
+            "allow_major_version_upgrade": null,
+            "apply_immediately": false,
+            "arn": "arn:aws:rds:eu-west-1:339712855370:db:ibm-workshop-db",
+            "auto_minor_version_upgrade": true,
+            "availability_zone": "eu-west-1a",
+            "backup_retention_period": 7,
+            "backup_target": "region",
+            "backup_window": "03:00-04:00",
+            "blue_green_update": [],
+            "ca_cert_identifier": "rds-ca-rsa2048-g1",
+            "character_set_name": "",
+            "copy_tags_to_snapshot": false,
+            "custom_iam_instance_profile": "",
+            "customer_owned_ip_enabled": false,
+            "database_insights_mode": "standard",
+            "db_name": "workshop",
+            "db_subnet_group_name": "ibm-workshop-db-subnet-group",
+            "dedicated_log_volume": false,
+            "delete_automated_backups": true,
+            "deletion_protection": false,
+            "domain": "",
+            "domain_auth_secret_arn": "",
+            "domain_dns_ips": null,
+            "domain_fqdn": "",
+            "domain_iam_role_name": "",
+            "domain_ou": "",
+            "enabled_cloudwatch_logs_exports": null,
+            "endpoint": "ibm-workshop-db.clogoeic03cw.eu-west-1.rds.amazonaws.com:3306",
+            "engine": "mysql",
+            "engine_lifecycle_support": "open-source-rds-extended-support",
+            "engine_version": "8.0",
+            "engine_version_actual": "8.0.42",
+            "final_snapshot_identifier": null,
+            "hosted_zone_id": "Z29XKXDKYMONMX",
+            "iam_database_authentication_enabled": false,
+            "id": "db-QOP3PYXHKHSD4TWSOSP46UXNZI",
+            "identifier": "ibm-workshop-db",
+            "identifier_prefix": "",
+            "instance_class": "db.t3.micro",
+            "iops": 0,
+            "kms_key_id": "arn:aws:kms:eu-west-1:339712855370:key/ef887282-4e47-419d-9e9b-81154e68c3ae",
+            "latest_restorable_time": "2025-08-24T18:46:48Z",
+            "license_model": "general-public-license",
+            "listener_endpoint": [],
+            "maintenance_window": "sun:04:00-sun:05:00",
+            "manage_master_user_password": null,
+            "master_user_secret": [],
+            "master_user_secret_kms_key_id": null,
+            "max_allocated_storage": 100,
+            "monitoring_interval": 0,
+            "monitoring_role_arn": "",
+            "multi_az": false,
+            "nchar_character_set_name": "",
+            "network_type": "IPV4",
+            "option_group_name": "default:mysql-8-0",
+            "parameter_group_name": "default.mysql8.0",
+            "password": "i\u003c%LbjFh+SltCLaA",
+            "password_wo": null,
+            "password_wo_version": null,
+            "performance_insights_enabled": false,
+            "performance_insights_kms_key_id": "",
+            "performance_insights_retention_period": 0,
+            "port": 3306,
+            "publicly_accessible": false,
+            "replica_mode": "",
+            "replicas": [],
+            "replicate_source_db": "",
+            "resource_id": "db-QOP3PYXHKHSD4TWSOSP46UXNZI",
+            "restore_to_point_in_time": [],
+            "s3_import": [],
+            "skip_final_snapshot": true,
+            "snapshot_identifier": null,
+            "status": "available",
+            "storage_encrypted": true,
+            "storage_throughput": 0,
+            "storage_type": "gp2",
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-database",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-database",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "timezone": "",
+            "upgrade_storage_config": null,
+            "username": "admin",
+            "vpc_security_group_ids": [
+              "sg-05edc3f5e945d35d2"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "password"
+              }
+            ]
+          ],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInVwZGF0ZSI6NDgwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",
+          "dependencies": [
+            "aws_db_subnet_group.main",
+            "aws_security_group.alb",
+            "aws_security_group.db",
+            "aws_security_group.web",
+            "aws_subnet.private",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available",
+            "random_password.db_password"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_db_subnet_group",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:rds:eu-west-1:339712855370:subgrp:ibm-workshop-db-subnet-group",
+            "description": "Managed by Terraform",
+            "id": "ibm-workshop-db-subnet-group",
+            "name": "ibm-workshop-db-subnet-group",
+            "name_prefix": "",
+            "subnet_ids": [
+              "subnet-069664d53846f1035",
+              "subnet-0c954fdffbffc5798"
+            ],
+            "supported_network_types": [
+              "IPV4"
+            ],
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-db-subnet-group",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-db-subnet-group",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_subnet.private",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_internet_gateway",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:internet-gateway/igw-0d0c23b5323d1f12e",
+            "id": "igw-0d0c23b5323d1f12e",
+            "owner_id": "339712855370",
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-igw",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-igw",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_launch_template",
+      "name": "web",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:launch-template/lt-029b8def5d7c8967d",
+            "block_device_mappings": [],
+            "capacity_reservation_specification": [],
+            "cpu_options": [],
+            "credit_specification": [],
+            "default_version": 1,
+            "description": "",
+            "disable_api_stop": false,
+            "disable_api_termination": false,
+            "ebs_optimized": "",
+            "elastic_gpu_specifications": [],
+            "elastic_inference_accelerator": [],
+            "enclave_options": [],
+            "hibernation_options": [],
+            "iam_instance_profile": [],
+            "id": "lt-029b8def5d7c8967d",
+            "image_id": "ami-06ce611e9f0dba763",
+            "instance_initiated_shutdown_behavior": "",
+            "instance_market_options": [],
+            "instance_requirements": [],
+            "instance_type": "t3.micro",
+            "kernel_id": "",
+            "key_name": "",
+            "latest_version": 1,
+            "license_specification": [],
+            "maintenance_options": [],
+            "metadata_options": [],
+            "monitoring": [],
+            "name": "ibm-workshop-20250824184852580800000005",
+            "name_prefix": "ibm-workshop-",
+            "network_interfaces": [],
+            "placement": [],
+            "private_dns_name_options": [],
+            "ram_disk_id": "",
+            "security_group_names": null,
+            "tag_specifications": [
+              {
+                "resource_type": "instance",
+                "tags": {
+                  "CostCenter": "ibm-champions",
+                  "CreatedBy": "terraform",
+                  "Environment": "workshop",
+                  "Name": "ibm-workshop-web-server",
+                  "Owner": "mohamed-ramadan-issa",
+                  "Project": "ibm-terraform-vault-demo",
+                  "Region": "eu-west-1",
+                  "Workshop": "terraform-vault-demo"
+                }
+              }
+            ],
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-launch-template",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-launch-template",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "update_default_version": null,
+            "user_data": "IyEvYmluL2Jhc2gKIyBJQk0gVGVycmFmb3JtICYgVmF1bHQgV29ya3Nob3AgLSBFQzIgVXNlciBEYXRhIFNjcmlwdAojIFByZXNlbnRlcjogTW9oYW1lZCBSYW1hZGFuIElzc2EKCiMgVXBkYXRlIHN5c3RlbQp5dW0gdXBkYXRlIC15CgojIEluc3RhbGwgcmVxdWlyZWQgcGFja2FnZXMKeXVtIGluc3RhbGwgLXkgaHR0cGQgcHl0aG9uMyBweXRob24zLXBpcCB1bnppcCB3Z2V0IGN1cmwKCiMgSW5zdGFsbCBWYXVsdApjZCAvdG1wCndnZXQgaHR0cHM6Ly9yZWxlYXNlcy5oYXNoaWNvcnAuY29tL3ZhdWx0LzEuMTUuMC92YXVsdF8xLjE1LjBfbGludXhfYW1kNjQuemlwCnVuemlwIHZhdWx0XzEuMTUuMF9saW51eF9hbWQ2NC56aXAKbXYgdmF1bHQgL3Vzci9sb2NhbC9iaW4vCmNobW9kICt4IC91c3IvbG9jYWwvYmluL3ZhdWx0CgojIENyZWF0ZSB2YXVsdCB1c2VyIGFuZCBkaXJlY3Rvcmllcwp1c2VyYWRkIC1yIC1kIC9vcHQvdmF1bHQgLXMgL2Jpbi9mYWxzZSB2YXVsdApta2RpciAtcCAvb3B0L3ZhdWx0L3tkYXRhLGNvbmZpZyxsb2dzfQpjaG93biAtUiB2YXVsdDp2YXVsdCAvb3B0L3ZhdWx0CgojIENyZWF0ZSBWYXVsdCBjb25maWd1cmF0aW9uCmNhdCA+IC9vcHQvdmF1bHQvY29uZmlnL3ZhdWx0LmhjbCA8PCAnRU9GJwp1aSA9IHRydWUKc3RvcmFnZSAiZmlsZSIgewogIHBhdGggPSAiL29wdC92YXVsdC9kYXRhIgp9Cmxpc3RlbmVyICJ0Y3AiIHsKICBhZGRyZXNzID0gIjAuMC4wLjA6ODIwMCIKICB0bHNfZGlzYWJsZSA9IHRydWUKfQphcGlfYWRkciA9ICJodHRwOi8vMC4wLjAuMDo4MjAwIgpjbHVzdGVyX2FkZHIgPSAiaHR0cDovLzAuMC4wLjA6ODIwMSIKRU9GCgojIENyZWF0ZSBWYXVsdCBzeXN0ZW1kIHNlcnZpY2UKY2F0ID4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS92YXVsdC5zZXJ2aWNlIDw8ICdFT0YnCltVbml0XQpEZXNjcmlwdGlvbj1IYXNoaUNvcnAgVmF1bHQKRG9jdW1lbnRhdGlvbj1odHRwczovL3d3dy52YXVsdHByb2plY3QuaW8vZG9jcy8KUmVxdWlyZXM9bmV0d29yay1vbmxpbmUudGFyZ2V0CkFmdGVyPW5ldHdvcmstb25saW5lLnRhcmdldApDb25kaXRpb25GaWxlTm90RW1wdHk9L29wdC92YXVsdC9jb25maWcvdmF1bHQuaGNsCgpbU2VydmljZV0KVHlwZT1ub3RpZnkKVXNlcj12YXVsdApHcm91cD12YXVsdApQcm90ZWN0U3lzdGVtPWZ1bGwKUHJvdGVjdEhvbWU9cmVhZC1vbmx5ClByaXZhdGVUbXA9eWVzClByaXZhdGVEZXZpY2VzPXllcwpTZWN1cmVCaXRzPWtlZXAtY2FwcwpBbWJpZW50Q2FwYWJpbGl0aWVzPUNBUF9JUENfTE9DSwpOb05ld1ByaXZpbGVnZXM9eWVzCkV4ZWNTdGFydD0vdXNyL2xvY2FsL2Jpbi92YXVsdCBzZXJ2ZXIgLWNvbmZpZz0vb3B0L3ZhdWx0L2NvbmZpZy92YXVsdC5oY2wKRXhlY1JlbG9hZD0vYmluL2tpbGwgLUhVUCAkTUFJTlBJRApLaWxsTW9kZT1wcm9jZXNzClJlc3RhcnQ9b24tZmFpbHVyZQpSZXN0YXJ0U2VjPTUKVGltZW91dFN0b3BTZWM9MzAKU3RhcnRMaW1pdEJ1cnN0PTMKTGltaXROT0ZJTEU9NjU1MzYKCltJbnN0YWxsXQpXYW50ZWRCeT1tdWx0aS11c2VyLnRhcmdldApFT0YKCiMgU3RhcnQgYW5kIGVuYWJsZSBWYXVsdApzeXN0ZW1jdGwgZGFlbW9uLXJlbG9hZApzeXN0ZW1jdGwgZW5hYmxlIHZhdWx0CnN5c3RlbWN0bCBzdGFydCB2YXVsdAoKIyBXYWl0IGZvciBWYXVsdCB0byBzdGFydApzbGVlcCAxMAoKIyBJbml0aWFsaXplIFZhdWx0IChmb3IgZGVtbyBwdXJwb3NlcyAtIG5vdCBwcm9kdWN0aW9uIHJlYWR5KQpleHBvcnQgVkFVTFRfQUREUj0iaHR0cDovL2xvY2FsaG9zdDo4MjAwIgp2YXVsdCBvcGVyYXRvciBpbml0IC1rZXktc2hhcmVzPTEgLWtleS10aHJlc2hvbGQ9MSA+IC90bXAvdmF1bHQtaW5pdC50eHQKCiMgRXh0cmFjdCB1bnNlYWwga2V5IGFuZCByb290IHRva2VuClVOU0VBTF9LRVk9JChncmVwICdVbnNlYWwgS2V5IDE6JyAvdG1wL3ZhdWx0LWluaXQudHh0IHwgYXdrICd7cHJpbnQgJE5GfScpClJPT1RfVE9LRU49ImkhN2J4V3cyfWd6cTx1ODp2KjdHIgoKIyBVbnNlYWwgVmF1bHQKdmF1bHQgb3BlcmF0b3IgdW5zZWFsICRVTlNFQUxfS0VZCgojIExvZ2luIHdpdGggcm9vdCB0b2tlbgp2YXVsdCBhdXRoICRST09UX1RPS0VOCgojIEVuYWJsZSBLViBzZWNyZXRzIGVuZ2luZQp2YXVsdCBzZWNyZXRzIGVuYWJsZSAtcGF0aD1zZWNyZXQga3YKCiMgU3RvcmUgZGF0YWJhc2UgY3JlZGVudGlhbHMgaW4gVmF1bHQKdmF1bHQga3YgcHV0IHNlY3JldC9kYXRhYmFzZSBcCiAgdXNlcm5hbWU9ImFkbWluIiBcCiAgcGFzc3dvcmQ9Imk8JUxiakZoK1NsdENMYUEiIFwKICBlbmRwb2ludD0iaWJtLXdvcmtzaG9wLWRiLmNsb2dvZWljMDNjdy5ldS13ZXN0LTEucmRzLmFtYXpvbmF3cy5jb206MzMwNiIKCiMgU3RvcmUgYWRkaXRpb25hbCBkZW1vIHNlY3JldHMKdmF1bHQga3YgcHV0IHNlY3JldC9hcHAgXAogIGFwaV9rZXk9ImRlbW8tYXBpLWtleS0xMjM0NSIgXAogIGFwcF9zZWNyZXQ9ImRlbW8tYXBwLXNlY3JldC02Nzg5MCIKCiMgQ3JlYXRlIHdlYiBhcHBsaWNhdGlvbiBkaXJlY3RvcnkKbWtkaXIgLXAgL3Zhci93d3cvaHRtbAoKIyBDcmVhdGUgdGhlIG1haW4gd2ViIGFwcGxpY2F0aW9uCmNhdCA+IC92YXIvd3d3L2h0bWwvaW5kZXguaHRtbCA8PCAnRU9GJwo8IURPQ1RZUEUgaHRtbD4KPGh0bWwgbGFuZz0iZW4iPgo8aGVhZD4KICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgIDxtZXRhIG5hbWU9InZpZXdwb3J0IiBjb250ZW50PSJ3aWR0aD1kZXZpY2Utd2lkdGgsIGluaXRpYWwtc2NhbGU9MS4wIj4KICAgIDx0aXRsZT5JQk0gVGVycmFmb3JtICYgVmF1bHQgV29ya3Nob3A8L3RpdGxlPgogICAgPHN0eWxlPgogICAgICAgICogewogICAgICAgICAgICBtYXJnaW46IDA7CiAgICAgICAgICAgIHBhZGRpbmc6IDA7CiAgICAgICAgICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIGJvZHkgewogICAgICAgICAgICBmb250LWZhbWlseTogJ0FyaWFsJywgc2Fucy1zZXJpZjsKICAgICAgICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzY2N2VlYSAwJSwgIzc2NGJhMiAxMDAlKTsKICAgICAgICAgICAgbWluLWhlaWdodDogMTAwdmg7CiAgICAgICAgICAgIGRpc3BsYXk6IGZsZXg7CiAgICAgICAgICAgIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47CiAgICAgICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgICAgICAgICBjb2xvcjogd2hpdGU7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5jb250YWluZXIgewogICAgICAgICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICAgICAgICAgIG1heC13aWR0aDogMTIwMHB4OwogICAgICAgICAgICBwYWRkaW5nOiAycmVtOwogICAgICAgICAgICBiYWNrZ3JvdW5kOiByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMSk7CiAgICAgICAgICAgIGJvcmRlci1yYWRpdXM6IDIwcHg7CiAgICAgICAgICAgIGJhY2tkcm9wLWZpbHRlcjogYmx1cigxMHB4KTsKICAgICAgICAgICAgYm94LXNoYWRvdzogMCA4cHggMzJweCByZ2JhKDMxLCAzOCwgMTM1LCAwLjM3KTsKICAgICAgICAgICAgYm9yZGVyOiAxcHggc29saWQgcmdiYSgyNTUsIDI1NSwgMjU1LCAwLjE4KTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLndlbGNvbWUtdGl0bGUgewogICAgICAgICAgICBmb250LXNpemU6IDNyZW07CiAgICAgICAgICAgIG1hcmdpbi1ib3R0b206IDFyZW07CiAgICAgICAgICAgIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCg0NWRlZywgI0ZGRDcwMCwgI0ZGQTUwMCk7CiAgICAgICAgICAgIC13ZWJraXQtYmFja2dyb3VuZC1jbGlwOiB0ZXh0OwogICAgICAgICAgICAtd2Via2l0LXRleHQtZmlsbC1jb2xvcjogdHJhbnNwYXJlbnQ7CiAgICAgICAgICAgIGJhY2tncm91bmQtY2xpcDogdGV4dDsKICAgICAgICAgICAgdGV4dC1zaGFkb3c6IDJweCAycHggNHB4IHJnYmEoMCwwLDAsMC4zKTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLnN1YnRpdGxlIHsKICAgICAgICAgICAgZm9udC1zaXplOiAxLjVyZW07CiAgICAgICAgICAgIG1hcmdpbi1ib3R0b206IDJyZW07CiAgICAgICAgICAgIG9wYWNpdHk6IDAuOTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLnByZXNlbnRlciB7CiAgICAgICAgICAgIGZvbnQtc2l6ZTogMS4ycmVtOwogICAgICAgICAgICBtYXJnaW4tYm90dG9tOiAycmVtOwogICAgICAgICAgICBjb2xvcjogI0ZGRDcwMDsKICAgICAgICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5sb2dvcyB7CiAgICAgICAgICAgIGRpc3BsYXk6IGZsZXg7CiAgICAgICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgICAgICAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgICAgICAgICBnYXA6IDJyZW07CiAgICAgICAgICAgIG1hcmdpbjogMnJlbSAwOwogICAgICAgICAgICBmbGV4LXdyYXA6IHdyYXA7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5sb2dvIHsKICAgICAgICAgICAgd2lkdGg6IDgwcHg7CiAgICAgICAgICAgIGhlaWdodDogODBweDsKICAgICAgICAgICAgYmFja2dyb3VuZDogd2hpdGU7CiAgICAgICAgICAgIGJvcmRlci1yYWRpdXM6IDE1cHg7CiAgICAgICAgICAgIGRpc3BsYXk6IGZsZXg7CiAgICAgICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgICAgICAgICBmb250LXdlaWdodDogYm9sZDsKICAgICAgICAgICAgY29sb3I6ICMzMzM7CiAgICAgICAgICAgIGJveC1zaGFkb3c6IDAgNHB4IDE1cHggcmdiYSgwLDAsMCwwLjIpOwogICAgICAgICAgICB0cmFuc2l0aW9uOiB0cmFuc2Zvcm0gMC4zcyBlYXNlOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAubG9nbzpob3ZlciB7CiAgICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgtNXB4KTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLmlibS1sb2dvIHsKICAgICAgICAgICAgYmFja2dyb3VuZDogIzEyNjFGRTsKICAgICAgICAgICAgY29sb3I6IHdoaXRlOwogICAgICAgICAgICBmb250LXNpemU6IDEuMnJlbTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLnRlcnJhZm9ybS1sb2dvIHsKICAgICAgICAgICAgYmFja2dyb3VuZDogIzYyM0NFNDsKICAgICAgICAgICAgY29sb3I6IHdoaXRlOwogICAgICAgICAgICBmb250LXNpemU6IDAuOHJlbTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLnZhdWx0LWxvZ28gewogICAgICAgICAgICBiYWNrZ3JvdW5kOiAjMDAwMDAwOwogICAgICAgICAgICBjb2xvcjogI0ZGRDgxNDsKICAgICAgICAgICAgZm9udC1zaXplOiAwLjlyZW07CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5hd3MtbG9nbyB7CiAgICAgICAgICAgIGJhY2tncm91bmQ6ICNGRjk5MDA7CiAgICAgICAgICAgIGNvbG9yOiB3aGl0ZTsKICAgICAgICAgICAgZm9udC1zaXplOiAwLjlyZW07CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5pbmZvLWdyaWQgewogICAgICAgICAgICBkaXNwbGF5OiBncmlkOwogICAgICAgICAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IHJlcGVhdChhdXRvLWZpdCwgbWlubWF4KDI1MHB4LCAxZnIpKTsKICAgICAgICAgICAgZ2FwOiAxcmVtOwogICAgICAgICAgICBtYXJnaW46IDJyZW0gMDsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLmluZm8tY2FyZCB7CiAgICAgICAgICAgIGJhY2tncm91bmQ6IHJnYmEoMjU1LCAyNTUsIDI1NSwgMC4xKTsKICAgICAgICAgICAgcGFkZGluZzogMS41cmVtOwogICAgICAgICAgICBib3JkZXItcmFkaXVzOiAxNXB4OwogICAgICAgICAgICBib3JkZXI6IDFweCBzb2xpZCByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMik7CiAgICAgICAgfQogICAgICAgIAogICAgICAgIC5pbmZvLWNhcmQgaDMgewogICAgICAgICAgICBjb2xvcjogI0ZGRDcwMDsKICAgICAgICAgICAgbWFyZ2luLWJvdHRvbTogMC41cmVtOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAudmF1bHQtZGVtbyB7CiAgICAgICAgICAgIG1hcmdpbjogMnJlbSAwOwogICAgICAgICAgICBwYWRkaW5nOiAxLjVyZW07CiAgICAgICAgICAgIGJhY2tncm91bmQ6IHJnYmEoMCwgMCwgMCwgMC4zKTsKICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogMTVweDsKICAgICAgICAgICAgYm9yZGVyLWxlZnQ6IDRweCBzb2xpZCAjRkZEODE0OwogICAgICAgIH0KICAgICAgICAKICAgICAgICAudmF1bHQtZGVtbyBoMyB7CiAgICAgICAgICAgIGNvbG9yOiAjRkZEODE0OwogICAgICAgICAgICBtYXJnaW4tYm90dG9tOiAxcmVtOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuc2VjcmV0LWRpc3BsYXkgewogICAgICAgICAgICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7CiAgICAgICAgICAgIHBhZGRpbmc6IDFyZW07CiAgICAgICAgICAgIGJvcmRlci1yYWRpdXM6IDEwcHg7CiAgICAgICAgICAgIGZvbnQtZmFtaWx5OiAnQ291cmllciBOZXcnLCBtb25vc3BhY2U7CiAgICAgICAgICAgIHRleHQtYWxpZ246IGxlZnQ7CiAgICAgICAgICAgIG1hcmdpbjogMXJlbSAwOwogICAgICAgIH0KICAgICAgICAKICAgICAgICAuZm9vdGVyIHsKICAgICAgICAgICAgbWFyZ2luLXRvcDogMnJlbTsKICAgICAgICAgICAgcGFkZGluZy10b3A6IDFyZW07CiAgICAgICAgICAgIGJvcmRlci10b3A6IDFweCBzb2xpZCByZ2JhKDI1NSwgMjU1LCAyNTUsIDAuMyk7CiAgICAgICAgICAgIG9wYWNpdHk6IDAuODsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgLmJsaW5rIHsKICAgICAgICAgICAgYW5pbWF0aW9uOiBibGluayAycyBpbmZpbml0ZTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgQGtleWZyYW1lcyBibGluayB7CiAgICAgICAgICAgIDAlLCA1MCUgeyBvcGFjaXR5OiAxOyB9CiAgICAgICAgICAgIDUxJSwgMTAwJSB7IG9wYWNpdHk6IDAuNTsgfQogICAgICAgIH0KICAgICAgICAKICAgICAgICAuc3RhdHVzLWluZGljYXRvciB7CiAgICAgICAgICAgIGRpc3BsYXk6IGlubGluZS1ibG9jazsKICAgICAgICAgICAgd2lkdGg6IDEycHg7CiAgICAgICAgICAgIGhlaWdodDogMTJweDsKICAgICAgICAgICAgYmFja2dyb3VuZDogIzAwZmYwMDsKICAgICAgICAgICAgYm9yZGVyLXJhZGl1czogNTAlOwogICAgICAgICAgICBtYXJnaW4tcmlnaHQ6IDhweDsKICAgICAgICAgICAgYW5pbWF0aW9uOiBwdWxzZSAycyBpbmZpbml0ZTsKICAgICAgICB9CiAgICAgICAgCiAgICAgICAgQGtleWZyYW1lcyBwdWxzZSB7CiAgICAgICAgICAgIDAlIHsgdHJhbnNmb3JtOiBzY2FsZSgxKTsgb3BhY2l0eTogMTsgfQogICAgICAgICAgICA1MCUgeyB0cmFuc2Zvcm06IHNjYWxlKDEuMik7IG9wYWNpdHk6IDAuNzsgfQogICAgICAgICAgICAxMDAlIHsgdHJhbnNmb3JtOiBzY2FsZSgxKTsgb3BhY2l0eTogMTsgfQogICAgICAgIH0KICAgIDwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CiAgICA8ZGl2IGNsYXNzPSJjb250YWluZXIiPgogICAgICAgIDxoMSBjbGFzcz0id2VsY29tZS10aXRsZSI+8J+OiSBXZWxjb21lIElCTSBDaGFtcGlvbnMgaW4gU2F1ZGkgQXJhYmlhISDwn4e48J+HpjwvaDE+CiAgICAgICAgPHAgY2xhc3M9InN1YnRpdGxlIj5UZXJyYWZvcm0gJiBIYXNoaUNvcnAgVmF1bHQgV29ya3Nob3A8L3A+CiAgICAgICAgPHAgY2xhc3M9InByZXNlbnRlciI+8J+RqOKAjfCfkrsgUHJlc2VudGVyOiBNb2hhbWVkIFJhbWFkYW4gSXNzYTwvcD4KICAgICAgICAKICAgICAgICA8ZGl2IGNsYXNzPSJsb2dvcyI+CiAgICAgICAgICAgIDxkaXYgY2xhc3M9ImxvZ28gaWJtLWxvZ28iPklCTTwvZGl2PgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJsb2dvIHRlcnJhZm9ybS1sb2dvIj5UZXJyYWZvcm08L2Rpdj4KICAgICAgICAgICAgPGRpdiBjbGFzcz0ibG9nbyB2YXVsdC1sb2dvIj5WYXVsdDwvZGl2PgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJsb2dvIGF3cy1sb2dvIj5BV1M8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8ZGl2IGNsYXNzPSJpbmZvLWdyaWQiPgogICAgICAgICAgICA8ZGl2IGNsYXNzPSJpbmZvLWNhcmQiPgogICAgICAgICAgICAgICAgPGgzPjxzcGFuIGNsYXNzPSJzdGF0dXMtaW5kaWNhdG9yIj48L3NwYW4+SW5mcmFzdHJ1Y3R1cmUgU3RhdHVzPC9oMz4KICAgICAgICAgICAgICAgIDxwPuKchSBWUEMgJiBTdWJuZXRzIENyZWF0ZWQ8L3A+CiAgICAgICAgICAgICAgICA8cD7inIUgTG9hZCBCYWxhbmNlciBBY3RpdmU8L3A+CiAgICAgICAgICAgICAgICA8cD7inIUgQXV0byBTY2FsaW5nIEdyb3VwIFJ1bm5pbmc8L3A+CiAgICAgICAgICAgICAgICA8cD7inIUgUkRTIERhdGFiYXNlIE9ubGluZTwvcD4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIAogICAgICAgICAgICA8ZGl2IGNsYXNzPSJpbmZvLWNhcmQiPgogICAgICAgICAgICAgICAgPGgzPvCflJAgU2VjdXJpdHkgRmVhdHVyZXM8L2gzPgogICAgICAgICAgICAgICAgPHA+4pyFIFZhdWx0IFNlcnZlciBSdW5uaW5nPC9wPgogICAgICAgICAgICAgICAgPHA+4pyFIFNlY3JldHMgRW5jcnlwdGVkPC9wPgogICAgICAgICAgICAgICAgPHA+4pyFIElBTSBSb2xlcyBDb25maWd1cmVkPC9wPgogICAgICAgICAgICAgICAgPHA+4pyFIFNlY3VyaXR5IEdyb3VwcyBBcHBsaWVkPC9wPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgCiAgICAgICAgICAgIDxkaXYgY2xhc3M9ImluZm8tY2FyZCI+CiAgICAgICAgICAgICAgICA8aDM+8J+Pt++4jyBSZXNvdXJjZSBUYWdnaW5nPC9oMz4KICAgICAgICAgICAgICAgIDxwPkVudmlyb25tZW50OiB3b3Jrc2hvcDwvcD4KICAgICAgICAgICAgICAgIDxwPlByb2plY3Q6IGlibS10ZXJyYWZvcm0tdmF1bHQtZGVtbzwvcD4KICAgICAgICAgICAgICAgIDxwPk93bmVyOiBtb2hhbWVkLXJhbWFkYW4taXNzYTwvcD4KICAgICAgICAgICAgICAgIDxwPlJlZ2lvbjogZXUtd2VzdC0xPC9wPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICAgICAgCiAgICAgICAgICAgIDxkaXYgY2xhc3M9ImluZm8tY2FyZCI+CiAgICAgICAgICAgICAgICA8aDM+8J+TiiBEZXBsb3ltZW50IEluZm88L2gzPgogICAgICAgICAgICAgICAgPHA+UmVnaW9uOiBFVSBXZXN0IChJcmVsYW5kKTwvcD4KICAgICAgICAgICAgICAgIDxwPkluc3RhbmNlczogQXV0byBTY2FsaW5nPC9wPgogICAgICAgICAgICAgICAgPHA+RGF0YWJhc2U6IE15U1FMIDguMDwvcD4KICAgICAgICAgICAgICAgIDxwPkxvYWQgQmFsYW5jZXI6IEFwcGxpY2F0aW9uIExCPC9wPgogICAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8ZGl2IGNsYXNzPSJ2YXVsdC1kZW1vIj4KICAgICAgICAgICAgPGgzPvCflJAgTGl2ZSBWYXVsdCBJbnRlZ3JhdGlvbiBEZW1vPC9oMz4KICAgICAgICAgICAgPHA+VGhpcyBhcHBsaWNhdGlvbiByZXRyaWV2ZXMgc2VjcmV0cyBmcm9tIEhhc2hpQ29ycCBWYXVsdCBpbiByZWFsLXRpbWU6PC9wPgogICAgICAgICAgICAKICAgICAgICAgICAgPGRpdiBjbGFzcz0ic2VjcmV0LWRpc3BsYXkiPgogICAgICAgICAgICAgICAgPHN0cm9uZz5EYXRhYmFzZSBDcmVkZW50aWFscyAoZnJvbSBWYXVsdCk6PC9zdHJvbmc+PGJyPgogICAgICAgICAgICAgICAg8J+UkSBVc2VybmFtZTogPHNwYW4gY2xhc3M9ImJsaW5rIj5hZG1pbjwvc3Bhbj48YnI+CiAgICAgICAgICAgICAgICDwn5SSIFBhc3N3b3JkOiA8c3BhbiBjbGFzcz0iYmxpbmsiPuKAouKAouKAouKAouKAouKAouKAouKAouKAouKAouKAouKAouKAouKAouKAouKAojwvc3Bhbj48YnI+CiAgICAgICAgICAgICAgICDwn4yQIEVuZHBvaW50OiA8c3BhbiBjbGFzcz0iYmxpbmsiPmlibS13b3Jrc2hvcC1kYi5jbG9nb2VpYzAzY3cuZXUtd2VzdC0xLnJkcy5hbWF6b25hd3MuY29tOjMzMDY8L3NwYW4+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAKICAgICAgICAgICAgPHA+PHN0cm9uZz5WYXVsdCBDb21tYW5kczo8L3N0cm9uZz48L3A+CiAgICAgICAgICAgIDxkaXYgY2xhc3M9InNlY3JldC1kaXNwbGF5Ij4KICAgICAgICAgICAgICAgIGV4cG9ydCBWQVVMVF9BRERSPWh0dHA6Ly8kKGN1cmwgLXMgaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9sYXRlc3QvbWV0YS1kYXRhL3B1YmxpYy1ob3N0bmFtZSk6ODIwMDxicj4KICAgICAgICAgICAgICAgIHZhdWx0IGt2IGdldCBzZWNyZXQvZGF0YWJhc2U8YnI+CiAgICAgICAgICAgICAgICB2YXVsdCBrdiBnZXQgc2VjcmV0L2FwcAogICAgICAgICAgICA8L2Rpdj4KICAgICAgICA8L2Rpdj4KICAgICAgICAKICAgICAgICA8ZGl2IGNsYXNzPSJmb290ZXIiPgogICAgICAgICAgICA8cD7wn5qAIERlcGxveWVkIHdpdGggVGVycmFmb3JtIHwg8J+UkCBTZWN1cmVkIHdpdGggVmF1bHQgfCDimIHvuI8gUG93ZXJlZCBieSBBV1M8L3A+CiAgICAgICAgICAgIDxwPldvcmtzaG9wIER1cmF0aW9uOiAxMCBtaW51dGVzIHwgVGFyZ2V0OiBJQk0gQ2hhbXBpb25zIFNhdWRpIEFyYWJpYTwvcD4KICAgICAgICAgICAgPHA+PHN0cm9uZz5SZW1lbWJlcjo8L3N0cm9uZz4gUnVuIDxjb2RlPnRlcnJhZm9ybSBkZXN0cm95PC9jb2RlPiBhZnRlciB0aGUgZGVtbyEg8J+SsDwvcD4KICAgICAgICA8L2Rpdj4KICAgIDwvZGl2PgogICAgCiAgICA8c2NyaXB0PgogICAgICAgIC8vIEFkZCBzb21lIGludGVyYWN0aXZpdHkKICAgICAgICBkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdET01Db250ZW50TG9hZGVkJywgZnVuY3Rpb24oKSB7CiAgICAgICAgICAgIC8vIFJvdGF0ZSBsb2dvcwogICAgICAgICAgICBjb25zdCBsb2dvcyA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJy5sb2dvJyk7CiAgICAgICAgICAgIGxvZ29zLmZvckVhY2goKGxvZ28sIGluZGV4KSA9PiB7CiAgICAgICAgICAgICAgICBsb2dvLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJywgZnVuY3Rpb24oKSB7CiAgICAgICAgICAgICAgICAgICAgdGhpcy5zdHlsZS50cmFuc2Zvcm0gPSAncm90YXRlKDM2MGRlZykgc2NhbGUoMS4xKSc7CiAgICAgICAgICAgICAgICAgICAgc2V0VGltZW91dCgoKSA9PiB7CiAgICAgICAgICAgICAgICAgICAgICAgIHRoaXMuc3R5bGUudHJhbnNmb3JtID0gJyc7CiAgICAgICAgICAgICAgICAgICAgfSwgNTAwKTsKICAgICAgICAgICAgICAgIH0pOwogICAgICAgICAgICB9KTsKICAgICAgICAgICAgCiAgICAgICAgICAgIC8vIFVwZGF0ZSB0aW1lc3RhbXAKICAgICAgICAgICAgY29uc3Qgbm93ID0gbmV3IERhdGUoKTsKICAgICAgICAgICAgY29uc3QgdGltZXN0YW1wID0gbm93LnRvTG9jYWxlU3RyaW5nKCdlbi1VUycsIHsKICAgICAgICAgICAgICAgIHRpbWVab25lOiAnQXNpYS9SaXlhZGgnLAogICAgICAgICAgICAgICAgeWVhcjogJ251bWVyaWMnLAogICAgICAgICAgICAgICAgbW9udGg6ICdsb25nJywKICAgICAgICAgICAgICAgIGRheTogJ251bWVyaWMnLAogICAgICAgICAgICAgICAgaG91cjogJzItZGlnaXQnLAogICAgICAgICAgICAgICAgbWludXRlOiAnMi1kaWdpdCcKICAgICAgICAgICAgfSk7CiAgICAgICAgICAgIAogICAgICAgICAgICBjb25zdCBmb290ZXIgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKCcuZm9vdGVyJyk7CiAgICAgICAgICAgIGZvb3Rlci5pbm5lckhUTUwgKz0gYDxwIHN0eWxlPSJtYXJnaW4tdG9wOiAxcmVtOyBmb250LXNpemU6IDAuOXJlbTsiPkRlcGxveWVkOiBgICsgdGltZXN0YW1wICsgYCAoU2F1ZGkgQXJhYmlhIFRpbWUpPC9wPmA7CiAgICAgICAgfSk7CiAgICA8L3NjcmlwdD4KPC9ib2R5Pgo8L2h0bWw+CkVPRgoKIyBDcmVhdGUgYSBzaW1wbGUgUHl0aG9uIEZsYXNrIGFwcCBmb3IgVmF1bHQgaW50ZWdyYXRpb24KY2F0ID4gL3Zhci93d3cvaHRtbC9hcHAucHkgPDwgJ0VPRicKIyEvdXNyL2Jpbi9lbnYgcHl0aG9uMwppbXBvcnQgb3MKaW1wb3J0IHN1YnByb2Nlc3MKaW1wb3J0IGpzb24KZnJvbSBmbGFzayBpbXBvcnQgRmxhc2ssIGpzb25pZnksIHJlbmRlcl90ZW1wbGF0ZV9zdHJpbmcKCmFwcCA9IEZsYXNrKF9fbmFtZV9fKQoKQGFwcC5yb3V0ZSgnL3ZhdWx0LXN0YXR1cycpCmRlZiB2YXVsdF9zdGF0dXMoKToKICAgIHRyeToKICAgICAgICByZXN1bHQgPSBzdWJwcm9jZXNzLnJ1bihbJ3ZhdWx0JywgJ3N0YXR1cycsICctZm9ybWF0PWpzb24nXSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNhcHR1cmVfb3V0cHV0PVRydWUsIHRleHQ9VHJ1ZSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVudj17J1ZBVUxUX0FERFInOiAnaHR0cDovL2xvY2FsaG9zdDo4MjAwJ30pCiAgICAgICAgaWYgcmVzdWx0LnJldHVybmNvZGUgPT0gMDoKICAgICAgICAgICAgcmV0dXJuIGpzb25pZnkoanNvbi5sb2FkcyhyZXN1bHQuc3Rkb3V0KSkKICAgICAgICBlbHNlOgogICAgICAgICAgICByZXR1cm4ganNvbmlmeSh7J2Vycm9yJzogJ1ZhdWx0IG5vdCBhY2Nlc3NpYmxlJ30pLCA1MDAKICAgIGV4Y2VwdCBFeGNlcHRpb24gYXMgZToKICAgICAgICByZXR1cm4ganNvbmlmeSh7J2Vycm9yJzogc3RyKGUpfSksIDUwMAoKQGFwcC5yb3V0ZSgnL3ZhdWx0LXNlY3JldHMnKQpkZWYgdmF1bHRfc2VjcmV0cygpOgogICAgdHJ5OgogICAgICAgICMgR2V0IGRhdGFiYXNlIHNlY3JldHMKICAgICAgICByZXN1bHQgPSBzdWJwcm9jZXNzLnJ1bihbJ3ZhdWx0JywgJ2t2JywgJ2dldCcsICctZm9ybWF0PWpzb24nLCAnc2VjcmV0L2RhdGFiYXNlJ10sIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjYXB0dXJlX291dHB1dD1UcnVlLCB0ZXh0PVRydWUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVudj17J1ZBVUxUX0FERFInOiAnaHR0cDovL2xvY2FsaG9zdDo4MjAwJywKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAnVkFVTFRfVE9LRU4nOiAnaSE3YnhXdzJ9Z3pxPHU4OnYqN0cnfSkKICAgICAgICBpZiByZXN1bHQucmV0dXJuY29kZSA9PSAwOgogICAgICAgICAgICBkYXRhID0ganNvbi5sb2FkcyhyZXN1bHQuc3Rkb3V0KQogICAgICAgICAgICByZXR1cm4ganNvbmlmeShkYXRhWydkYXRhJ10pCiAgICAgICAgZWxzZToKICAgICAgICAgICAgcmV0dXJuIGpzb25pZnkoeydlcnJvcic6ICdDb3VsZCBub3QgcmV0cmlldmUgc2VjcmV0cyd9KSwgNTAwCiAgICBleGNlcHQgRXhjZXB0aW9uIGFzIGU6CiAgICAgICAgcmV0dXJuIGpzb25pZnkoeydlcnJvcic6IHN0cihlKX0pLCA1MDAKCmlmIF9fbmFtZV9fID09ICdfX21haW5fXyc6CiAgICBhcHAucnVuKGhvc3Q9JzAuMC4wLjAnLCBwb3J0PTUwMDApCkVPRgoKIyBNYWtlIFB5dGhvbiBhcHAgZXhlY3V0YWJsZQpjaG1vZCAreCAvdmFyL3d3dy9odG1sL2FwcC5weQoKIyBJbnN0YWxsIEZsYXNrCnBpcDMgaW5zdGFsbCBmbGFzawoKIyBTdGFydCBBcGFjaGUKc3lzdGVtY3RsIGVuYWJsZSBodHRwZApzeXN0ZW1jdGwgc3RhcnQgaHR0cGQKCiMgQ3JlYXRlIGEgc2ltcGxlIGhlYWx0aCBjaGVjayBlbmRwb2ludApjYXQgPiAvdmFyL3d3dy9odG1sL2hlYWx0aCA8PCAnRU9GJwpPSwpFT0YKCiMgU2V0IHByb3BlciBwZXJtaXNzaW9ucwpjaG93biAtUiBhcGFjaGU6YXBhY2hlIC92YXIvd3d3L2h0bWwKY2htb2QgLVIgNzU1IC92YXIvd3d3L2h0bWwKCiMgQ3JlYXRlIGEgc3RhcnR1cCBzY3JpcHQgZm9yIHRoZSBGbGFzayBhcHAKY2F0ID4gL2V0Yy9zeXN0ZW1kL3N5c3RlbS9mbGFzay1hcHAuc2VydmljZSA8PCAnRU9GJwpbVW5pdF0KRGVzY3JpcHRpb249Rmxhc2sgVmF1bHQgRGVtbyBBcHAKQWZ0ZXI9bmV0d29yay50YXJnZXQgdmF1bHQuc2VydmljZQoKW1NlcnZpY2VdClR5cGU9c2ltcGxlClVzZXI9YXBhY2hlCldvcmtpbmdEaXJlY3Rvcnk9L3Zhci93d3cvaHRtbApFbnZpcm9ubWVudD1WQVVMVF9BRERSPWh0dHA6Ly9sb2NhbGhvc3Q6ODIwMApFbnZpcm9ubWVudD1WQVVMVF9UT0tFTj1pITdieFd3Mn1nenE8dTg6dio3RwpFeGVjU3RhcnQ9L3Vzci9iaW4vcHl0aG9uMyAvdmFyL3d3dy9odG1sL2FwcC5weQpSZXN0YXJ0PWFsd2F5cwoKW0luc3RhbGxdCldhbnRlZEJ5PW11bHRpLXVzZXIudGFyZ2V0CkVPRgoKIyBFbmFibGUgYW5kIHN0YXJ0IEZsYXNrIGFwcApzeXN0ZW1jdGwgZGFlbW9uLXJlbG9hZApzeXN0ZW1jdGwgZW5hYmxlIGZsYXNrLWFwcApzeXN0ZW1jdGwgc3RhcnQgZmxhc2stYXBwCgojIExvZyBkZXBsb3ltZW50IGNvbXBsZXRpb24KZWNobyAiJChkYXRlKTogSUJNIFRlcnJhZm9ybSAmIFZhdWx0IFdvcmtzaG9wIGRlcGxveW1lbnQgY29tcGxldGVkIiA+PiAvdmFyL2xvZy93b3Jrc2hvcC1kZXBsb3ltZW50LmxvZwplY2hvICJQcmVzZW50ZXI6IE1vaGFtZWQgUmFtYWRhbiBJc3NhIiA+PiAvdmFyL2xvZy93b3Jrc2hvcC1kZXBsb3ltZW50LmxvZwplY2hvICJUYXJnZXQ6IElCTSBDaGFtcGlvbnMgU2F1ZGkgQXJhYmlhIiA+PiAvdmFyL2xvZy93b3Jrc2hvcC1kZXBsb3ltZW50LmxvZwplY2hvICJWYXVsdCBVUkw6IGh0dHA6Ly8kKGN1cmwgLXMgaHR0cDovLzE2OS4yNTQuMTY5LjI1NC9sYXRlc3QvbWV0YS1kYXRhL3B1YmxpYy1ob3N0bmFtZSk6ODIwMCIgPj4gL3Zhci9sb2cvd29ya3Nob3AtZGVwbG95bWVudC5sb2cKRU9GCg==",
+            "vpc_security_group_ids": [
+              "sg-05967404d6580eaa9"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "user_data"
+              }
+            ]
+          ],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_db_instance.main",
+            "aws_db_subnet_group.main",
+            "aws_security_group.alb",
+            "aws_security_group.db",
+            "aws_security_group.web",
+            "aws_subnet.private",
+            "aws_vpc.main",
+            "data.aws_ami.amazon_linux",
+            "data.aws_availability_zones.available",
+            "random_password.db_password",
+            "random_password.vault_password"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "access_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "arn": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:loadbalancer/app/ibm-workshop-alb/a0de09af45859ae6",
+            "arn_suffix": "app/ibm-workshop-alb/a0de09af45859ae6",
+            "client_keep_alive": 3600,
+            "connection_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "customer_owned_ipv4_pool": "",
+            "desync_mitigation_mode": "defensive",
+            "dns_name": "ibm-workshop-alb-1641883201.eu-west-1.elb.amazonaws.com",
+            "dns_record_client_routing_policy": null,
+            "drop_invalid_header_fields": false,
+            "enable_cross_zone_load_balancing": true,
+            "enable_deletion_protection": false,
+            "enable_http2": true,
+            "enable_tls_version_and_cipher_suite_headers": false,
+            "enable_waf_fail_open": false,
+            "enable_xff_client_port": false,
+            "enable_zonal_shift": false,
+            "enforce_security_group_inbound_rules_on_private_link_traffic": "",
+            "id": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:loadbalancer/app/ibm-workshop-alb/a0de09af45859ae6",
+            "idle_timeout": 60,
+            "internal": false,
+            "ip_address_type": "ipv4",
+            "ipam_pools": [],
+            "load_balancer_type": "application",
+            "minimum_load_balancer_capacity": [],
+            "name": "ibm-workshop-alb",
+            "name_prefix": "",
+            "preserve_host_header": false,
+            "security_groups": [
+              "sg-0a9517a2fa4951b31"
+            ],
+            "subnet_mapping": [
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-04b0781b0e10cc46f"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-04da1be96b6f3b559"
+              }
+            ],
+            "subnets": [
+              "subnet-04b0781b0e10cc46f",
+              "subnet-04da1be96b6f3b559"
+            ],
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-alb",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-alb",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356",
+            "xff_header_processing_mode": "append",
+            "zone_id": "Z32O12XQLNTSW2"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_security_group.alb",
+            "aws_subnet.public",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb_listener",
+      "name": "web",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alpn_policy": null,
+            "arn": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:listener/app/ibm-workshop-alb/a0de09af45859ae6/9c45be0275039a77",
+            "certificate_arn": null,
+            "default_action": [
+              {
+                "authenticate_cognito": [],
+                "authenticate_oidc": [],
+                "fixed_response": [],
+                "forward": [],
+                "order": 1,
+                "redirect": [],
+                "target_group_arn": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:targetgroup/ibm-workshop-tg/703befdd2264dcaa",
+                "type": "forward"
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:listener/app/ibm-workshop-alb/a0de09af45859ae6/9c45be0275039a77",
+            "load_balancer_arn": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:loadbalancer/app/ibm-workshop-alb/a0de09af45859ae6",
+            "mutual_authentication": [],
+            "port": 80,
+            "protocol": "HTTP",
+            "routing_http_request_x_amzn_mtls_clientcert_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": null,
+            "routing_http_request_x_amzn_tls_cipher_suite_header_name": null,
+            "routing_http_request_x_amzn_tls_version_header_name": null,
+            "routing_http_response_access_control_allow_credentials_header_value": "",
+            "routing_http_response_access_control_allow_headers_header_value": "",
+            "routing_http_response_access_control_allow_methods_header_value": "",
+            "routing_http_response_access_control_allow_origin_header_value": "",
+            "routing_http_response_access_control_expose_headers_header_value": "",
+            "routing_http_response_access_control_max_age_header_value": "",
+            "routing_http_response_content_security_policy_header_value": "",
+            "routing_http_response_server_enabled": true,
+            "routing_http_response_strict_transport_security_header_value": "",
+            "routing_http_response_x_content_type_options_header_value": "",
+            "routing_http_response_x_frame_options_header_value": "",
+            "ssl_policy": "",
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-listener",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-listener",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tcp_idle_timeout_seconds": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsInVwZGF0ZSI6MzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "aws_lb.main",
+            "aws_lb_target_group.web",
+            "aws_security_group.alb",
+            "aws_subnet.public",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_lb_target_group",
+      "name": "web",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:targetgroup/ibm-workshop-tg/703befdd2264dcaa",
+            "arn_suffix": "targetgroup/ibm-workshop-tg/703befdd2264dcaa",
+            "connection_termination": null,
+            "deregistration_delay": "300",
+            "health_check": [
+              {
+                "enabled": true,
+                "healthy_threshold": 2,
+                "interval": 30,
+                "matcher": "200",
+                "path": "/",
+                "port": "traffic-port",
+                "protocol": "HTTP",
+                "timeout": 5,
+                "unhealthy_threshold": 2
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:eu-west-1:339712855370:targetgroup/ibm-workshop-tg/703befdd2264dcaa",
+            "ip_address_type": "ipv4",
+            "lambda_multi_value_headers_enabled": false,
+            "load_balancer_arns": [],
+            "load_balancing_algorithm_type": "round_robin",
+            "load_balancing_anomaly_mitigation": "off",
+            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+            "name": "ibm-workshop-tg",
+            "name_prefix": "",
+            "port": 80,
+            "preserve_client_ip": null,
+            "protocol": "HTTP",
+            "protocol_version": "HTTP1",
+            "proxy_protocol_v2": false,
+            "slow_start": 0,
+            "stickiness": [
+              {
+                "cookie_duration": 86400,
+                "cookie_name": "",
+                "enabled": false,
+                "type": "lb_cookie"
+              }
+            ],
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-target-group",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-target-group",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "target_failover": [
+              {
+                "on_deregistration": null,
+                "on_unhealthy": null
+              }
+            ],
+            "target_group_health": [
+              {
+                "dns_failover": [
+                  {
+                    "minimum_healthy_targets_count": "1",
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ],
+                "unhealthy_state_routing": [
+                  {
+                    "minimum_healthy_targets_count": 1,
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ]
+              }
+            ],
+            "target_health_state": [
+              {
+                "enable_unhealthy_connection_termination": null,
+                "unhealthy_draining_interval": null
+              }
+            ],
+            "target_type": "instance",
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:route-table/rtb-0e7b0c412ac04a758",
+            "id": "rtb-0e7b0c412ac04a758",
+            "owner_id": "339712855370",
+            "propagating_vgws": [],
+            "route": [
+              {
+                "carrier_gateway_id": "",
+                "cidr_block": "0.0.0.0/0",
+                "core_network_arn": "",
+                "destination_prefix_list_id": "",
+                "egress_only_gateway_id": "",
+                "gateway_id": "igw-0d0c23b5323d1f12e",
+                "ipv6_cidr_block": "",
+                "local_gateway_id": "",
+                "nat_gateway_id": "",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_endpoint_id": "",
+                "vpc_peering_connection_id": ""
+              }
+            ],
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-public-rt",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-public-rt",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_internet_gateway.main",
+            "aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-0c0c29064fb1096b7",
+            "route_table_id": "rtb-0e7b0c412ac04a758",
+            "subnet_id": "subnet-04b0781b0e10cc46f",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_internet_gateway.main",
+            "aws_route_table.public",
+            "aws_subnet.public",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-0b05f5e927af4c677",
+            "route_table_id": "rtb-0e7b0c412ac04a758",
+            "subnet_id": "subnet-04da1be96b6f3b559",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_internet_gateway.main",
+            "aws_route_table.public",
+            "aws_subnet.public",
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:security-group/sg-0a9517a2fa4951b31",
+            "description": "Managed by Terraform",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0a9517a2fa4951b31",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 443
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "name": "ibm-workshop-alb-20250824184304283800000001",
+            "name_prefix": "ibm-workshop-alb-",
+            "owner_id": "339712855370",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-alb-sg",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-alb-sg",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:security-group/sg-05edc3f5e945d35d2",
+            "description": "Managed by Terraform",
+            "egress": [],
+            "id": "sg-05edc3f5e945d35d2",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 3306,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-05967404d6580eaa9"
+                ],
+                "self": false,
+                "to_port": 3306
+              }
+            ],
+            "name": "ibm-workshop-db-20250824184313024300000004",
+            "name_prefix": "ibm-workshop-db-",
+            "owner_id": "339712855370",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-db-sg",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-db-sg",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_security_group.alb",
+            "aws_security_group.web",
+            "aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "web",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:security-group/sg-05967404d6580eaa9",
+            "description": "Managed by Terraform",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-05967404d6580eaa9",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 22,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 22
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 8200,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 8200
+              },
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0a9517a2fa4951b31"
+                ],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "name": "ibm-workshop-web-20250824184308710600000003",
+            "name_prefix": "ibm-workshop-web-",
+            "owner_id": "339712855370",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-web-sg",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-web-sg",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_security_group.alb",
+            "aws_vpc.main"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "private",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:subnet/subnet-069664d53846f1035",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "eu-west-1a",
+            "availability_zone_id": "euw1-az1",
+            "cidr_block": "10.0.10.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-069664d53846f1035",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": false,
+            "outpost_arn": "",
+            "owner_id": "339712855370",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-private-subnet-1",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Type": "Private",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-private-subnet-1",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Type": "Private",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:subnet/subnet-0c954fdffbffc5798",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "eu-west-1b",
+            "availability_zone_id": "euw1-az2",
+            "cidr_block": "10.0.11.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-0c954fdffbffc5798",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": false,
+            "outpost_arn": "",
+            "owner_id": "339712855370",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-private-subnet-2",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Type": "Private",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-private-subnet-2",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Type": "Private",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:subnet/subnet-04b0781b0e10cc46f",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "eu-west-1a",
+            "availability_zone_id": "euw1-az1",
+            "cidr_block": "10.0.1.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-04b0781b0e10cc46f",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "339712855370",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-public-subnet-1",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Type": "Public",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-public-subnet-1",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Type": "Public",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:subnet/subnet-04da1be96b6f3b559",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "eu-west-1b",
+            "availability_zone_id": "euw1-az2",
+            "cidr_block": "10.0.2.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-04da1be96b6f3b559",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "339712855370",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-public-subnet-2",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Type": "Public",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-public-subnet-2",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Type": "Public",
+              "Workshop": "terraform-vault-demo"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-041a871c097939356"
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.main",
+            "data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "main",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:eu-west-1:339712855370:vpc/vpc-041a871c097939356",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.0.0.0/16",
+            "default_network_acl_id": "acl-0d475fa6bc78180ee",
+            "default_route_table_id": "rtb-0cb699918daa0a399",
+            "default_security_group_id": "sg-0f6ad908bc7872c77",
+            "dhcp_options_id": "dopt-06833ba2fd989fa29",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "id": "vpc-041a871c097939356",
+            "instance_tenancy": "default",
+            "ipv4_ipam_pool_id": null,
+            "ipv4_netmask_length": null,
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_network_border_group": "",
+            "ipv6_ipam_pool_id": "",
+            "ipv6_netmask_length": 0,
+            "main_route_table_id": "rtb-0cb699918daa0a399",
+            "owner_id": "339712855370",
+            "tags": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-vpc",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            },
+            "tags_all": {
+              "CostCenter": "ibm-champions",
+              "CreatedBy": "terraform",
+              "Environment": "workshop",
+              "Name": "ibm-workshop-vpc",
+              "Owner": "mohamed-ramadan-issa",
+              "Project": "ibm-terraform-vault-demo",
+              "Region": "eu-west-1",
+              "Workshop": "terraform-vault-demo"
+            }
+          },
+          "sensitive_attributes": [],
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "random_password",
+      "name": "db_password",
+      "provider": "provider[\"registry.terraform.io/hashicorp/random\"]",
+      "instances": [
+        {
+          "schema_version": 3,
+          "attributes": {
+            "bcrypt_hash": "$2a$10$dAFiLNHs2.kaNrCKsMyjaurVd2kspfUOhl.qZv/Z83VK.5Rbeke4O",
+            "id": "none",
+            "keepers": null,
+            "length": 16,
+            "lower": true,
+            "min_lower": 0,
+            "min_numeric": 0,
+            "min_special": 0,
+            "min_upper": 0,
+            "number": true,
+            "numeric": true,
+            "override_special": null,
+            "result": "i\u003c%LbjFh+SltCLaA",
+            "special": true,
+            "upper": true
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "random_password",
+      "name": "vault_password",
+      "provider": "provider[\"registry.terraform.io/hashicorp/random\"]",
+      "instances": [
+        {
+          "schema_version": 3,
+          "attributes": {
+            "bcrypt_hash": "$2a$10$lKECmaqcsL0ocqj2AkKsUOp8ZtB3msnrfiWl21zFLDEaIka4Dg9IG",
+            "id": "none",
+            "keepers": null,
+            "length": 20,
+            "lower": true,
+            "min_lower": 0,
+            "min_numeric": 0,
+            "min_special": 0,
+            "min_upper": 0,
+            "number": true,
+            "numeric": true,
+            "override_special": null,
+            "result": "i!7bxWw2}gzq\u003cu8:v*7G",
+            "special": true,
+            "upper": true
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

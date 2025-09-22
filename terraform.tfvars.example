@@ -1,0 +1,29 @@
+# Example Terraform Variables for IBM Terraform & Vault Workshop
+# Copy this file to terraform.tfvars and customize as needed
+
+# AWS Configuration
+aws_region = "eu-west-1"
+
+# Project Configuration
+project_name    = "ibm-terraform-vault-workshop"
+environment     = "workshop"
+presenter_name  = "mohamed-ramadan-issa"
+
+# EC2 Configuration
+instance_type = "t3.micro"  # Free tier eligible
+
+# RDS Configuration
+db_instance_class = "db.t3.micro"  # Free tier eligible
+
+# Auto Scaling Configuration
+min_size         = 1
+max_size         = 3
+desired_capacity = 2
+
+# Additional tags (optional)
+# You can add more tags here if needed for your organization
+additional_tags = {
+  Department = "IT"
+  Team       = "DevOps"
+  Purpose    = "Workshop"
+}
